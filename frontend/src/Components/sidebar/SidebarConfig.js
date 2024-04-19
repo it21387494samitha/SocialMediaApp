@@ -13,6 +13,7 @@ import {
 } from "react-icons/ai";
 import { RiVideoFill, RiVideoLine } from "react-icons/ri";
 import { CgProfile } from "react-icons/cg";
+import { FaDumbbell } from "react-icons/fa";
 export const menuItems = [
   {
     title: "Home",
@@ -38,6 +39,11 @@ export const menuItems = [
     title: "Message",
     icon: <AiOutlineMessage className="text-2xl mr-5"></AiOutlineMessage>,
     activeIcon: <AiFillMessage className="text-2xl mr-5"></AiFillMessage>,
+  },
+  {
+    title: "Workout",
+    icon: <FaDumbbell className="text-2xl mr-5"></FaDumbbell>,
+    activeIcon: <FaDumbbell className="text-2xl mr-5"></FaDumbbell>,
   },
   {
     title: "Notification",

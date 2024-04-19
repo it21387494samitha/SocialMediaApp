@@ -23,6 +23,9 @@ export const Sidebar = () => {
       onOpen();
     } else if (title === "Search") {
       setIsSearchVisible(true);
+    } else if (title === "Workout") {
+      setIsSearchVisible(false);
+      navigate("/workout");
     } else {
       setIsSearchVisible(false);
     }

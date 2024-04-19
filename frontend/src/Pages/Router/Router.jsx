@@ -5,6 +5,9 @@ import { HomePage } from "../HomePage/HomePage";
 import Profile from "../Profile/Profile";
 import Story from "../Story/Story";
 
+import WorkoutRoute from "../WorkoutPage/WorkoutRoute";
+import Workout from "../WorkoutPage/Workout";
+
 export const Router = () => {
   return (
     <div>
@@ -17,6 +20,7 @@ export const Router = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/username" element={<Profile />} />
             <Route path="/story" element={<Story />} />
+            <Route path="/workout" element={<WorkoutRoute />} />
           </Routes>
         </div>
       </div>
