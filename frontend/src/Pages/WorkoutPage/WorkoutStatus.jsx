@@ -36,13 +36,15 @@ import { FaRegShareFromSquare } from "react-icons/fa6";
 import { BiChat, BiLike, BiShare } from "react-icons/bi";
 import WorkoutProfileUpdateModal from "../../Components/Workout/WorkoutProfileUpdateModal";
 import { TbActivityHeartbeat } from "react-icons/tb";
+import { useParams } from "react-router-dom";
 
 const WorkoutStatus = () => {
+  const { username } = useParams();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [height, setHeight] = useState(1.2);
-  const [weight, setWeight] = useState(60);
-  const [bmi, setBmi] = useState(20);
-  const [calories, setCalories] = useState(2000);
+  const [height, setHeight] = useState();
+  const [weight, setWeight] = useState();
+  const [bmi, setBmi] = useState();
+  const [calories, setCalories] = useState();
 
   const handleClick = () => {
     onOpen();
@@ -224,7 +226,7 @@ const WorkoutStatus = () => {
                         </Tbody>
                       </Table>
                       <div className="float-end m-4 text-2xl cursor-pointer">
-                        <FaRegShareFromSquare />
+                        <FaRegShareFromSquare className="text-blue-500" />
                       </div>
                     </TableContainer>
                   </div>

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import CreatePostModal from "../Post/CreatePostModal";
 import { useDisclosure } from "@chakra-ui/react";
 import SearchComponents from "../SearchComponents/SearchComponents";
+import logo from "../../assets/logo.svg";
 export const Sidebar = () => {
   const [activeTab, setActiveTab] = useState("");
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ export const Sidebar = () => {
       navigate("/username");
     } else if (title === "Home") {
       setIsSearchVisible(false);
-      navigate("/");
+      navigate("/home");
     } else if (title === "Create") {
       setIsSearchVisible(false);
       onOpen();
@@ -41,11 +42,7 @@ export const Sidebar = () => {
           <div>
             {activeTab !== "Search" && (
               <div className="pt-10">
-                <img
-                  className="w-40"
-                  src="https://i.imgur.com/zqpwkLQ.png"
-                  alt=""
-                />
+                <img className="w-40" src={logo} alt="" />
               </div>
             )}
             <div className="mt-10">

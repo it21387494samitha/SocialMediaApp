@@ -154,7 +154,9 @@ const WorkoutGoals = () => {
                         </Tbody>
                       </Table>
                       <div className="float-end m-4 text-2xl cursor-pointer">
-                        <Button onClick={handleClick}>Update</Button>
+                        <Button onClick={handleClick} className="text-blue-400">
+                          Update
+                        </Button>
                       </div>
                     </TableContainer>
                   </div>

@@ -10,13 +10,36 @@ import {
   ModalContent,
   ModalOverlay,
 } from "@chakra-ui/react";
+
 import React, { useState } from "react";
+import axios from "axios";
 
 const WorkoutProfileUpdateModal = ({ onClose, isOpen }) => {
   const [height, setHeight] = useState(1.2);
   const [weight, setWeight] = useState(60);
   const [bmi, setBmi] = useState(20);
   const [calories, setCalories] = useState(2000);
+
+  const handleUpdate = async () => {
+    try {
+      // Make an HTTP PUT request to update the workout profile
+      const response = await axios.put(
+        "/api/workout-profiles", // Update the endpoint as per your backend API
+        {
+          height: height,
+          weight: weight,
+          bmi: bmi,
+          calories: calories,
+        }
+      );
+      console.log("Update Successful:", response.data);
+      // Optionally, you can handle success messages or close the modal
+      onClose();
+    } catch (error) {
+      console.error("Update Error:", error.response.data);
+      // Handle errors or display error messages
+    }
+  };
 
   const handleClick = () => {
     onClose();
@@ -86,7 +109,7 @@ const WorkoutProfileUpdateModal = ({ onClose, isOpen }) => {
                       <Input onChange={handleCalories} value={calories}></Input>
                     </div>
                     <Button
-                      onClick={handleClick}
+                      onClick={handleUpdate}
                       className="text-4xl mt-4 float-end"
                     >
                       Save
