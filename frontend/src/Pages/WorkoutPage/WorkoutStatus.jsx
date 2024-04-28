@@ -24,7 +24,7 @@ import {
   Tr,
   useDisclosure,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaRunning } from "react-icons/fa";
 import { GiWeightLiftingUp } from "react-icons/gi";
 import { GrYoga } from "react-icons/gr";
@@ -37,17 +37,32 @@ import { BiChat, BiLike, BiShare } from "react-icons/bi";
 import WorkoutProfileUpdateModal from "../../Components/Workout/WorkoutProfileUpdateModal";
 import { TbActivityHeartbeat } from "react-icons/tb";
 import { useParams } from "react-router-dom";
+import WorkoutProfileSaveModal from "../../Components/Workout/WorkoutProfileSaveModal";
+import axios from "axios";
 
 const WorkoutStatus = () => {
   const { username } = useParams();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isSaveOpen,
+    onOpen: onSaveOpen,
+    onClose: onSaveClose,
+  } = useDisclosure();
+  const {
+    isOpen: isUpdateOpen,
+    onOpen: onUpdateOpen,
+    onClose: onUpdateClose,
+  } = useDisclosure();
   const [height, setHeight] = useState();
   const [weight, setWeight] = useState();
   const [bmi, setBmi] = useState();
   const [calories, setCalories] = useState();
 
-  const handleClick = () => {
-    onOpen();
+  const handleUpdate = () => {
+    onUpdateOpen();
+  };
+
+  const handleSave = () => {
+    onSaveOpen();
   };
 
   const handleHeight = (e) => {
@@ -62,6 +77,21 @@ const WorkoutStatus = () => {
   const handleCalories = (e) => {
     setCalories(e.target.value);
   };
+  const Id = localStorage.getItem("workoutProfileId");
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8080/api/workoutprofile/${Id}`)
+      .then((response) => {
+        // Update state with the fetched data
+        setHeight(response.data.height);
+        setWeight(response.data.weight);
+        setBmi(response.data.bmi);
+        setCalories(response.data.calories);
+      })
+      .catch((error) => {
+        console.error("Error fetching workout profile:", error);
+      });
+  }, []); // Add an empty array as the second argument to run the effect only once on mount
 
   return (
     <div>
@@ -93,29 +123,43 @@ const WorkoutStatus = () => {
               <label htmlFor="" className="font-semibold">
                 Height
               </label>
-              <Input onChange={handleHeight} value={height}></Input>
+              <Input onChange={handleHeight} value={height} disabled></Input>
             </div>
             <div className="mt-4">
               <label htmlFor="" className="font-semibold">
                 Weight
               </label>
-              <Input onChange={handleWeight} value={weight}></Input>
+              <Input onChange={handleWeight} value={weight} disabled></Input>
             </div>
             <div className="mt-4">
               <label htmlFor="" className="font-semibold mt-4">
                 Bmi
               </label>
-              <Input onChange={handleBmi} value={bmi}></Input>
+              <Input onChange={handleBmi} value={bmi} disabled></Input>
             </div>
             <div className="mt-4">
               <label htmlFor="" className="font-semibold">
                 Calories
               </label>
-              <Input onChange={handleCalories} value={calories}></Input>
+              <Input
+                onChange={handleCalories}
+                value={calories}
+                disabled
+              ></Input>
             </div>
-            <Button onClick={handleClick} className="text-4xl mt-4 float-end">
-              Update
-            </Button>
+            {!weight && !height && !bmi && !calories && (
+              <Button onClick={handleSave} className="text-4xl mt-4 float-end">
+                Save
+              </Button>
+            )}
+            {calories && (
+              <Button
+                onClick={handleUpdate}
+                className="text-4xl mt-4 float-end"
+              >
+                Update
+              </Button>
+            )}
           </CardBody>
 
           <CardFooter
@@ -237,7 +281,15 @@ const WorkoutStatus = () => {
           </div>
         </div>
       </div>
-      <WorkoutProfileUpdateModal isOpen={isOpen} onClose={onClose} />
+      <WorkoutProfileUpdateModal
+        isUpdateOpen={isUpdateOpen}
+        onUpdateClose={onUpdateClose}
+        workoutId={Id}
+      />
+      <WorkoutProfileSaveModal
+        isSaveOpen={isSaveOpen}
+        onSaveClose={onSaveClose}
+      />
     </div>
   );
 };

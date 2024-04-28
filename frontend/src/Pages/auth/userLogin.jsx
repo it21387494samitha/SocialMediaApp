@@ -5,9 +5,8 @@ import appleicon from "../../assets/apple.svg";
 import pageimage from "../../assets/amico.svg";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import { Router } from "../Router/Router";
 
-function UserLogin() {
+function UserLogin({ setLoggedIn }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
@@ -32,12 +31,15 @@ function UserLogin() {
       if (response.status === 200) {
         console.log("Login successful:", response.data.userId);
         // Navigate to dashboard after successful login
-        navigate(`/home/${response.data.userId}`);
+        navigate("/home");
+        localStorage.setItem("userId", response.data.userId);
+        localStorage.setItem("isLoggedIn", true);
 
         // Clear the form and error state
         setUsername("");
         setPassword("");
         setError(null);
+        setLoggedIn(true);
       } else {
         // Handle other status codes if needed
         setError("Login failed. Please try again.");

@@ -11,25 +11,20 @@ import {
   ModalOverlay,
 } from "@chakra-ui/react";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 
-const WorkoutProfileUpdateModal = ({
-  onUpdateClose,
-  isUpdateOpen,
-  workoutId,
-}) => {
+const WorkoutProfileSaveModal = ({ onSaveClose, isSaveOpen }) => {
   const [height, setHeight] = useState();
   const [weight, setWeight] = useState();
   const [bmi, setBmi] = useState();
   const [calories, setCalories] = useState();
 
   const handleUpdate = async () => {
-    console.log("workoutId", workoutId);
     try {
       // Make an HTTP PUT request to update the workout profile
-      const response = await axios.put(
-        `http://localhost:8080/api/workoutprofile/${workoutId}`, // Update the endpoint as per your backend API
+      const response = await axios.post(
+        "http://localhost:8080/api/workoutprofile/", // Update the endpoint as per your backend API
         {
           userId: localStorage.getItem("userId"),
           height: height,
@@ -38,9 +33,10 @@ const WorkoutProfileUpdateModal = ({
           calories: calories,
         }
       );
+      localStorage.setItem("workoutProfileId", response.data.id);
       console.log("Update Successful:", response.data);
       // Optionally, you can handle success messages or close the modal
-      onUpdateClose();
+      onSaveClose();
     } catch (error) {
       console.error("Update Error:", error.response.data);
       // Handle errors or display error messages
@@ -48,7 +44,7 @@ const WorkoutProfileUpdateModal = ({
   };
 
   const handleClick = () => {
-    onUpdateClose();
+    onSaveClose();
   };
 
   const handleHeight = (e) => {
@@ -67,29 +63,9 @@ const WorkoutProfileUpdateModal = ({
     setCalories(e.target.value);
   };
 
-  useEffect(() => {
-    axios
-      .get(`http://localhost:8080/api/workoutprofile/${workoutId}`)
-      .then((response) => {
-        // Update state with the fetched data
-        setHeight(response.data.height);
-        setWeight(response.data.weight);
-        setBmi(response.data.bmi);
-        setCalories(response.data.calories);
-      })
-      .catch((error) => {
-        console.error("Error fetching workout profile:", error);
-      });
-  }, [workoutId]);
-
   return (
     <div>
-      <Modal
-        size={"2xl"}
-        onClose={onUpdateClose}
-        isOpen={isUpdateOpen}
-        isCentered
-      >
+      <Modal size={"2xl"} onClose={onSaveClose} isOpen={isSaveOpen} isCentered>
         <ModalOverlay />
         <ModalContent>
           <ModalBody>
@@ -114,47 +90,31 @@ const WorkoutProfileUpdateModal = ({
                       <label htmlFor="" className="font-semibold">
                         Height
                       </label>
-                      <Input
-                        onChange={handleHeight}
-                        value={height}
-                        type="number"
-                      ></Input>
+                      <Input onChange={handleHeight} value={height}></Input>
                     </div>
                     <div className="mt-4">
                       <label htmlFor="" className="font-semibold">
                         Weight
                       </label>
-                      <Input
-                        onChange={handleWeight}
-                        value={weight}
-                        type="number"
-                      ></Input>
+                      <Input onChange={handleWeight} value={weight}></Input>
                     </div>
                     <div className="mt-4">
                       <label htmlFor="" className="font-semibold mt-4">
                         Bmi
                       </label>
-                      <Input
-                        onChange={handleBmi}
-                        value={bmi}
-                        type="number"
-                      ></Input>
+                      <Input onChange={handleBmi} value={bmi}></Input>
                     </div>
                     <div className="mt-4">
                       <label htmlFor="" className="font-semibold">
                         Calories
                       </label>
-                      <Input
-                        onChange={handleCalories}
-                        value={calories}
-                        type="number"
-                      ></Input>
+                      <Input onChange={handleCalories} value={calories}></Input>
                     </div>
                     <Button
                       onClick={handleUpdate}
                       className="text-4xl mt-4 float-end"
                     >
-                      Update
+                      Save
                     </Button>
                   </CardBody>
 
@@ -177,4 +137,4 @@ const WorkoutProfileUpdateModal = ({
   );
 };
 
-export default WorkoutProfileUpdateModal;
+export default WorkoutProfileSaveModal;

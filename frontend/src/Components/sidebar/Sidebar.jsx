@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { IoReorderThreeOutline } from "react-icons/io5";
 import { menuItems } from "./SidebarConfig";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CreatePostModal from "../Post/CreatePostModal";
 import { useDisclosure } from "@chakra-ui/react";
 import SearchComponents from "../SearchComponents/SearchComponents";
 import logo from "../../assets/logo.svg";
-export const Sidebar = () => {
+import { BiLogOutCircle } from "react-icons/bi";
+export const Sidebar = ({ isLoggedIn, handleLogout }) => {
   const [activeTab, setActiveTab] = useState("");
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -66,9 +67,16 @@ export const Sidebar = () => {
             </div>
           </div>
         }
-        <div className="flex items-center cursor-pointer pb-10">
-          <IoReorderThreeOutline className="text-2xl" />
-          {activeTab !== "Search" && <p className="ml-5 ">More</p>}
+        <div
+          className="flex items-center cursor-pointer pb-10"
+          onClick={handleLogout}
+        >
+          <BiLogOutCircle className="text-2xl" />
+          {activeTab !== "Search" && (
+            <Link to="/">
+              <p className="ml-5 ">LogOut</p>
+            </Link>
+          )}
         </div>
       </div>
       <CreatePostModal onClose={onClose} isOpen={isOpen} />
