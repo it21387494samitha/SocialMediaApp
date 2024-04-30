@@ -7,6 +7,10 @@ import Story from "../Story/Story";
 
 import WorkoutRoute from "../WorkoutPage/WorkoutRoute";
 import Workout from "../WorkoutPage/Workout";
+import CreateMealPlan from "../../MealPlan/CreateMealPlan";
+import NewMealPlan from "../../MealPlan/NewMealPlan";
+import MealHeader from "../../MealPlan/MealHeader";
+import UpdateMealPlan from "../../MealPlan/UpdateMealPlan";
 
 export const Router = () => {
   return (
@@ -21,6 +25,10 @@ export const Router = () => {
             <Route path="/username" element={<Profile />} />
             <Route path="/story" element={<Story />} />
             <Route path="/workout" element={<WorkoutRoute />} />
+            <Route path="/cm" element={<CreateMealPlan/>} />
+            <Route path="/ncm" element={<NewMealPlan />} />
+            <Route path="ucm" element={<UpdateMealPlan/>}/>
+            
           </Routes>
         </div>
       </div>
