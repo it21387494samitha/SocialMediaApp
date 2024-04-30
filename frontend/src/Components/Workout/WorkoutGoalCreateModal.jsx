@@ -35,8 +35,12 @@ const WorkoutGoalCreateModal = ({ onClose, isOpen }) => {
     { name: "Swimming", desc: "-", unit: "Hour" },
   ]);
   const [goalType, setGoalType] = useState("daily");
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(
+    new Date().toISOString().split("T")[0]
+  );
+  const [endDate, setEndDate] = useState(
+    new Date().toISOString().split("T")[0]
+  );
 
   const addActivity = (name, desc, unit) => {
     setActivities([...activities, { name, desc, unit, target: "" }]);
