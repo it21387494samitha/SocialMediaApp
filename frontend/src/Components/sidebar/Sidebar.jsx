@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { IoReorderThreeOutline } from "react-icons/io5";
 import { menuItems } from "./SidebarConfig";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CreatePostModal from "../Post/CreatePostModal";
 import { useDisclosure } from "@chakra-ui/react";
 import SearchComponents from "../SearchComponents/SearchComponents";
-export const Sidebar = () => {
+import logo from "../../assets/logo.svg";
+import { BiLogOutCircle } from "react-icons/bi";
+export const Sidebar = ({ isLoggedIn, handleLogout }) => {
   const [activeTab, setActiveTab] = useState("");
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -17,7 +19,7 @@ export const Sidebar = () => {
       navigate("/username");
     } else if (title === "Home") {
       setIsSearchVisible(false);
-      navigate("/");
+      navigate("/home");
     } else if (title === "Create") {
       setIsSearchVisible(false);
       onOpen();
@@ -41,11 +43,15 @@ export const Sidebar = () => {
           <div>
             {activeTab !== "Search" && (
               <div className="pt-10">
+
                 <img
                   className="w-40"
                   src=""
                   alt=""
                 />
+
+                <img className="w-40" src={logo} alt="" />
+
               </div>
             )}
             <div className="mt-10">
@@ -69,9 +75,16 @@ export const Sidebar = () => {
             </div>
           </div>
         }
-        <div className="flex items-center cursor-pointer pb-10">
-          <IoReorderThreeOutline className="text-2xl" />
-          {activeTab !== "Search" && <p className="ml-5 ">More</p>}
+        <div
+          className="flex items-center cursor-pointer pb-10"
+          onClick={handleLogout}
+        >
+          <BiLogOutCircle className="text-2xl" />
+          {activeTab !== "Search" && (
+            <Link to="/">
+              <p className="ml-5 ">LogOut</p>
+            </Link>
+          )}
         </div>
       </div>
       <CreatePostModal onClose={onClose} isOpen={isOpen} />

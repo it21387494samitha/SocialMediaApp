@@ -6,7 +6,25 @@ import { GiWeightLiftingUp } from "react-icons/gi";
 import { GrYoga } from "react-icons/gr";
 import { AiFillPlusCircle } from "react-icons/ai";
 import WorkoutCreateModal from "../../Components/Workout/WorkoutCreateModal";
-import { useDisclosure } from "@chakra-ui/react";
+import {
+  Card,
+  CardBody,
+  Flex,
+  Stack,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+  useDisclosure,
+} from "@chakra-ui/react";
+import { TiTick } from "react-icons/ti";
+import { IoClose } from "react-icons/io5";
+import { FaRegShareFromSquare } from "react-icons/fa6";
+import { TbActivityHeartbeat } from "react-icons/tb";
 const Workout = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const labels = ["January", "February", "March", "April", "May", "June"];
@@ -49,10 +67,12 @@ const Workout = () => {
           </div>
         </div>
 
-        <div className="">
+        <div className="ml-8">
           <div className="flex justify-between items-center">
-            <div>
+            <div className="flex items-center">
+              <TbActivityHeartbeat />
               <h1 className="text-2xl m-4 font-semibold">Last Workout</h1>
+              <hr />
             </div>
             <div>
               <AiFillPlusCircle
@@ -61,30 +81,90 @@ const Workout = () => {
               />
             </div>
           </div>
-          <div className="flex flex-wrap justify-center">
-            <div className="m-4">
-              <div className="border border-gray-400 p-4 rounded-lg">
-                <FaRunning className="text-4xl" />
-                <h2 className="text-xl font-semibold">Running</h2>
-                <p className="text-lg">Distance: 5km</p>
-                <p className="text-lg">Duration: 30 min</p>
-              </div>
-            </div>
-            <div className="m-4">
-              <div className="border border-gray-400 p-4 rounded-lg">
-                <GiWeightLiftingUp className="text-4xl" />
-                <h2 className="text-xl font-semibold">Weight Lifting</h2>
-                <p className="text-lg">Reps: 10</p>
-                <p className="text-lg">Sets: 3</p>
-              </div>
-            </div>
-            <div className="m-4">
-              <div className="border border-gray-400 p-4 rounded-lg">
-                <GrYoga className="text-4xl" />
-                <h2 className="text-xl font-semibold">Yoga</h2>
-                <p className="text-lg">Duration: 1 h</p>
-              </div>
-            </div>
+          <div>
+            <Stack>
+              <Card size="md">
+                <CardBody>
+                  <div className="">
+                    <TableContainer>
+                      <Table variant="simple">
+                        <Thead>
+                          <Tr>
+                            <Th>Name</Th>
+                            <Th>Details</Th>
+                            <Th>Duration</Th>
+                          </Tr>
+                        </Thead>
+                        <Tbody>
+                          <Tr>
+                            <Td>
+                              <div className="flex">
+                                <FaRunning className="text-xl" />
+                                <h2 className="ml-2">Running</h2>
+                              </div>
+                            </Td>
+                            <Td>
+                              5 <span>(km)</span>
+                            </Td>
+                            <Td>
+                              {" "}
+                              120 <span>(min)</span>
+                            </Td>
+                            <Td>
+                              <TiTick className="font-bold text-green-600 text-xl" />
+                            </Td>
+                          </Tr>
+                          <Tr>
+                            <Td>
+                              <div className="flex">
+                                <GiWeightLiftingUp className="text-xl" />
+                                <h2 className="ml-2">Weight Lifting</h2>
+                              </div>
+                            </Td>
+                            <Td>
+                              <Flex justify="space-between">
+                                <Text>10 Reps</Text>
+                              </Flex>
+                              <Flex justify="space-between">
+                                <Text>Using 3 Sets</Text>
+                              </Flex>
+                            </Td>
+                            <Td>
+                              120 <span>(min)</span>
+                            </Td>
+
+                            <Td>
+                              <TiTick className="font-bold text-green-600 text-xl" />
+                            </Td>
+                          </Tr>
+                          <Tr>
+                            <Td>
+                              <div className="flex">
+                                <GrYoga className="text-xl" />
+                                <h2 className="ml-2">Yoga</h2>
+                              </div>
+                            </Td>
+                            <Td>
+                              <Text>1 Hour</Text>
+                            </Td>
+                            <Td>
+                              <Text>1 Hour</Text>
+                            </Td>
+                            <Td>
+                              <TiTick className="font-bold text-green-600 text-xl" />
+                            </Td>
+                          </Tr>
+                        </Tbody>
+                      </Table>
+                      <div className="float-end m-4 text-2xl cursor-pointer">
+                        <FaRegShareFromSquare />
+                      </div>
+                    </TableContainer>
+                  </div>
+                  <Text></Text>
+                </CardBody>
+              </Card>
+            </Stack>
           </div>
         </div>
       </div>
@@ -94,10 +174,27 @@ const Workout = () => {
 
           <hr />
 
-          <div className="border border-gray-400 p-4 rounded-lg">
-            <GrYoga className="text-4xl" />
-            <h2 className="text-xl font-semibold">Yoga</h2>
-            <p className="text-lg">Duration: 1 hour</p>
+          <div>
+            <Card size="md" className="w-[50%] m-4 ">
+              <CardBody className="flex space-x-8">
+                <div>
+                  <h2 className="font-bold">Running</h2>
+                  <p>5 km</p>
+                  <p>120 min</p>
+                </div>
+
+                <div>
+                  <h2 className="font-bold">Weight Lifting</h2>
+                  <p>10 Reps</p>
+                  <p>120 min</p>
+                </div>
+                <div>
+                  <h2 className="font-bold">Yoga</h2>
+                  <p>1 Hour</p>
+                  <p>1 Hour</p>
+                </div>
+              </CardBody>
+            </Card>
           </div>
         </div>
       </div>
