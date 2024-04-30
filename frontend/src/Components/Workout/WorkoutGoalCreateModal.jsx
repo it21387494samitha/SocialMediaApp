@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios"; // Import Axios for making HTTP requests
 import {
   Button,
   Card,
@@ -20,7 +21,7 @@ import {
   Select,
 } from "@chakra-ui/react";
 
-import { FaRunning } from "react-icons/fa";
+import { FaRunning, FaSwimmer } from "react-icons/fa";
 import { GiWeightLiftingUp } from "react-icons/gi";
 import { GrYoga } from "react-icons/gr";
 import { MdOutlineRemoveCircleOutline } from "react-icons/md";
@@ -28,17 +29,17 @@ import { MdOutlineRemoveCircleOutline } from "react-icons/md";
 const WorkoutGoalCreateModal = ({ onClose, isOpen }) => {
   const [activities, setActivities] = useState([]);
   const [availableActivities, setAvailableActivities] = useState([
-    { name: "Running", unit: "km" },
-    { name: "Weight Lifting", unit: "Sets" },
-    { name: "Yoga", unit: "Hour" },
-    { name: "Swimming", unit: "Hour" },
+    { name: "Running", desc: "-", unit: "km" },
+    { name: "Weight Lifting", desc: "Sets", unit: "Reps" },
+    { name: "Yoga", desc: "-", unit: "Hour" },
+    { name: "Swimming", desc: "-", unit: "Hour" },
   ]);
   const [goalType, setGoalType] = useState("daily");
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
 
-  const addActivity = (name, unit) => {
-    setActivities([...activities, { name, target: "", unit }]);
+  const addActivity = (name, desc, unit) => {
+    setActivities([...activities, { name, desc, unit, target: "" }]);
     setAvailableActivities(
       availableActivities.filter((activity) => activity.name !== name)
     );
@@ -67,6 +68,26 @@ const WorkoutGoalCreateModal = ({ onClose, isOpen }) => {
 
   const handleEndDateChange = (event) => {
     setEndDate(event.target.value);
+  };
+
+  const userId = localStorage.getItem("userId");
+
+  const saveWorkoutGoal = async () => {
+    try {
+      const response = await axios.post(
+        `http://localhost:8080/api/workout-goals/${userId}`,
+        {
+          type: goalType,
+          startDate,
+          endDate,
+          activities,
+        }
+      );
+      console.log(response.data); // Log the response data if needed
+      // Optionally, you can reset the state or close the modal after successful save
+    } catch (error) {
+      console.error("Error saving workout goal:", error);
+    }
   };
 
   return (
@@ -139,11 +160,38 @@ const WorkoutGoalCreateModal = ({ onClose, isOpen }) => {
                                     {activity.name === "Yoga" && (
                                       <GrYoga className="text-xl" />
                                     )}
+                                    {activity.name === "Swimming" && (
+                                      <FaSwimmer className="text-xl" />
+                                    )}
                                     <h2 className="ml-2">{activity.name}</h2>
                                   </div>
                                 </Td>
                                 <Td>
-                                  <span>-</span>
+                                  <div className="flex">
+                                    {activity.name === "Running" && (
+                                      <span>{activity.desc}</span>
+                                    )}
+                                    {activity.name === "Weight Lifting" && (
+                                      <div>
+                                        <Input
+                                          style={{ width: "4rem" }}
+                                          className="mr-2"
+                                          name="sets"
+                                          value={activity.sets}
+                                          onChange={(e) =>
+                                            handleInputChange(index, e)
+                                          }
+                                        />
+                                        <span>{activity.desc}</span>
+                                      </div>
+                                    )}
+                                    {activity.name === "Yoga" && (
+                                      <span>{activity.desc}</span>
+                                    )}
+                                    {activity.name === "Swimming" && (
+                                      <span>{activity.desc}</span>
+                                    )}
+                                  </div>
                                 </Td>
                                 <Td>
                                   <Input
@@ -177,14 +225,16 @@ const WorkoutGoalCreateModal = ({ onClose, isOpen }) => {
               {availableActivities.map((activity, index) => (
                 <Button
                   key={index}
-                  onClick={() => addActivity(activity.name, activity.unit)}
+                  onClick={() =>
+                    addActivity(activity.name, activity.desc, activity.unit)
+                  }
                   className="mr-2"
                 >
                   {activity.name}
                 </Button>
               ))}
 
-              <Button>Save</Button>
+              <Button onClick={saveWorkoutGoal}>Save</Button>
             </div>
           </ModalBody>
         </ModalContent>
