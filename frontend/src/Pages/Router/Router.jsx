@@ -38,13 +38,8 @@ export const Router = () => {
         <div className="w-full">
           <Routes>
 
-            <Route path="/" element={<HomePage />} />
-            <Route path="/username" element={<Profile />} />
-            <Route path="/story" element={<Story />} />
-            <Route path="/workout" element={<WorkoutRoute />} />
-            <Route path="/cm" element={<CreateMealPlan/>} />
-            <Route path="/ncm" element={<NewMealPlan />} />
-            <Route path="ucm" element={<UpdateMealPlan/>}/>
+            
+          
 
             {!loggedIn && (
               <Route
@@ -57,7 +52,9 @@ export const Router = () => {
             {loggedIn && <Route path="/story" element={<Story />} />}
 
             {loggedIn && <Route path="/workout" element={<WorkoutRoute />} />}
-
+            {loggedIn && <Route path="/cm" element={<CreateMealPlan/>} />}
+             {loggedIn && <Route path="/ncm" element={<NewMealPlan/>} />}
+             {loggedIn && <Route path="/ucm" element={<UpdateMealPlan/>} />}
           </Routes>
         </div>
       </div>
